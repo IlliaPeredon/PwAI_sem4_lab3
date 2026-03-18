@@ -153,5 +153,79 @@ namespace lab3
         }
 
 
+        // point 4
+
+        public delegate void UIUpdateDelegate();
+
+        private void ChangeBackgroundColor()
+        {
+            Test_Subject_Label.BackColor = ColorTranslator.FromHtml(BackGround_Color.Text);
+        }
+
+        private void ChangeFontColor()
+        {
+            Test_Subject_Label.ForeColor = ColorTranslator.FromHtml(Font_Color.Text);
+        }
+
+        private void ChangeFontSize()
+        {
+            if (int.TryParse(Font_Size.Text, out int size))
+            {
+                Test_Subject_Label.Font = new Font(Test_Subject_Label.Font.FontFamily, size);
+            }
+        }
+
+        private void Implement_Colors_Button_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(BackGround_Color.Text) || 
+                string.IsNullOrWhiteSpace(Font_Color.Text) || 
+                string.IsNullOrWhiteSpace(Font_Size.Text))
+            {
+                MessageBox.Show("Please fill all three text fields.");
+                return;
+            }
+
+            if (!System.Text.RegularExpressions.Regex.IsMatch(BackGround_Color.Text, "^#[0-9a-fA-F]{6}$"))
+            {
+                MessageBox.Show("Background color must be in #ffffff format.");
+                return;
+            }
+
+            if (!System.Text.RegularExpressions.Regex.IsMatch(Font_Color.Text, "^#[0-9a-fA-F]{6}$"))
+            {
+                MessageBox.Show("Font color must be in #ffffff format.");
+                return;
+            }
+
+            if (!int.TryParse(Font_Size.Text, out int size) || size <= 0)
+            {
+                MessageBox.Show("Font size must be a positive integer.");
+                return;
+            }
+
+            UIUpdateDelegate updateUI = ChangeBackgroundColor;
+            updateUI += ChangeFontColor;
+            updateUI += ChangeFontSize;
+
+            try
+            {
+                updateUI();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error applying styles: " + ex.Message);
+            }
+        }
+
+        private void BackToNormal_button_Click(object sender, EventArgs e)
+        {
+            Test_Subject_Label.BackColor = SystemColors.Control;
+            Test_Subject_Label.ForeColor = SystemColors.ControlText;
+            Test_Subject_Label.Font = new Font(Test_Subject_Label.Font.FontFamily, 9f);
+            
+            BackGround_Color.Clear();
+            Font_Color.Clear();
+            Font_Size.Clear();
+        }
     }
 }
