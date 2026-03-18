@@ -177,8 +177,8 @@ namespace lab3
 
         private void Implement_Colors_Button_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(BackGround_Color.Text) || 
-                string.IsNullOrWhiteSpace(Font_Color.Text) || 
+            if (string.IsNullOrWhiteSpace(BackGround_Color.Text) ||
+                string.IsNullOrWhiteSpace(Font_Color.Text) ||
                 string.IsNullOrWhiteSpace(Font_Size.Text))
             {
                 MessageBox.Show("Please fill all three text fields.");
@@ -222,10 +222,68 @@ namespace lab3
             Test_Subject_Label.BackColor = SystemColors.Control;
             Test_Subject_Label.ForeColor = SystemColors.ControlText;
             Test_Subject_Label.Font = new Font(Test_Subject_Label.Font.FontFamily, 9f);
-            
+
             BackGround_Color.Clear();
             Font_Color.Clear();
             Font_Size.Clear();
+        }
+
+        //point 5
+
+        public delegate List<double> SortDelegate(List<double> list);
+        private List<double> BubbleSort(List<double> list)
+        {
+            List<double> sorted = new List<double>(list); // copy list
+
+            for (int i = 0; i < sorted.Count - 1; i++)
+            {
+                for (int j = 0; j < sorted.Count - i - 1; j++)
+                {
+                    if (sorted[j] > sorted[j + 1])
+                    {
+                        double temp = sorted[j];
+                        sorted[j] = sorted[j + 1];
+                        sorted[j + 1] = temp;
+                    }
+                }
+            }
+
+            return sorted;
+        }
+        private List<double> sortNumbersList = new List<double>();
+
+        private void AddToSortList_Click(object sender, EventArgs e)
+        {
+            if (!double.TryParse(textBox1.Text, out double number))
+            {
+                MessageBox.Show("Invalid number.");
+                return;
+            }
+
+            sortNumbersList.Add(number);
+            listBox3.Items.Add(number);
+
+            textBox1.Clear();
+        }
+
+        private void Sort_Click(object sender, EventArgs e)
+        {
+            if (sortNumbersList.Count == 0)
+            {
+                MessageBox.Show("List is empty.");
+                return;
+            }
+
+            SortDelegate sorter = BubbleSort;
+
+            var sortedList = sorter(sortNumbersList);
+
+            listBox4.Items.Clear();
+
+            foreach (var item in sortedList)
+            {
+                listBox4.Items.Add(item);
+            }
         }
     }
 }
