@@ -57,6 +57,7 @@ namespace lab3
             Implement_Colors_Button = new Button();
             BackToNormal_button = new Button();
             groupBox1 = new GroupBox();
+            Build_button = new Button();
             groupBox2 = new GroupBox();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             label14 = new Label();
@@ -300,15 +301,16 @@ namespace lab3
             // label13
             // 
             label13.AutoSize = true;
-            label13.Location = new Point(79, 465);
+            label13.Font = new Font("Segoe UI", 8F);
+            label13.Location = new Point(13, 461);
             label13.Name = "label13";
-            label13.Size = new Size(289, 128);
+            label13.Size = new Size(237, 120);
             label13.TabIndex = 25;
-            label13.Text = "Please write a #ffffff type \r\nof color in *Color*\r\nYou can use numbers 1-9\r\n and letters a-f\r\n";
+            label13.Text = "Please write a #ffffff \r\ntype of color in *Color*\r\nYou can use numbers\r\n 1-9 and letters a-f\r\n";
             // 
             // Implement_Colors_Button
             // 
-            Implement_Colors_Button.Location = new Point(228, 309);
+            Implement_Colors_Button.Location = new Point(228, 325);
             Implement_Colors_Button.Name = "Implement_Colors_Button";
             Implement_Colors_Button.Size = new Size(173, 51);
             Implement_Colors_Button.TabIndex = 26;
@@ -318,7 +320,7 @@ namespace lab3
             // 
             // BackToNormal_button
             // 
-            BackToNormal_button.Location = new Point(228, 379);
+            BackToNormal_button.Location = new Point(228, 552);
             BackToNormal_button.Name = "BackToNormal_button";
             BackToNormal_button.Size = new Size(173, 51);
             BackToNormal_button.TabIndex = 27;
@@ -329,6 +331,7 @@ namespace lab3
             // groupBox1
             // 
             groupBox1.BackColor = SystemColors.ActiveCaption;
+            groupBox1.Controls.Add(Build_button);
             groupBox1.Controls.Add(BackToNormal_button);
             groupBox1.Controls.Add(Implement_Colors_Button);
             groupBox1.Controls.Add(label13);
@@ -345,6 +348,16 @@ namespace lab3
             groupBox1.Size = new Size(420, 609);
             groupBox1.TabIndex = 28;
             groupBox1.TabStop = false;
+            // 
+            // Build_button
+            // 
+            Build_button.Location = new Point(238, 391);
+            Build_button.Name = "Build_button";
+            Build_button.Size = new Size(146, 50);
+            Build_button.TabIndex = 28;
+            Build_button.Text = "Build";
+            Build_button.UseVisualStyleBackColor = true;
+            Build_button.Click += Build_button_Click;
             // 
             // groupBox2
             // 
@@ -375,11 +388,11 @@ namespace lab3
             // label14
             // 
             label14.AutoSize = true;
-            label14.Location = new Point(138, 35);
+            label14.Location = new Point(114, 35);
             label14.Name = "label14";
-            label14.Size = new Size(117, 32);
+            label14.Size = new Size(184, 32);
             label14.TabIndex = 28;
-            label14.Text = "Point 5 UI";
+            label14.Text = "Point 5 and 6 UI";
             // 
             // listBox3
             // 
@@ -402,11 +415,11 @@ namespace lab3
             // label15
             // 
             label15.AutoSize = true;
-            label15.Location = new Point(4, 459);
+            label15.Location = new Point(12, 448);
             label15.Name = "label15";
-            label15.Size = new Size(168, 32);
+            label15.Size = new Size(167, 32);
             label15.TabIndex = 17;
-            label15.Text = "Number to list";
+            label15.Text = "Element to list";
             // 
             // textBox1
             // 
@@ -476,7 +489,7 @@ namespace lab3
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1541, 656);
+            ClientSize = new Size(1552, 656);
             Controls.Add(groupBox3);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
@@ -534,5 +547,6 @@ namespace lab3
         private Label label16;
         private Label label17;
         private GroupBox groupBox3;
+        private Button Build_button;
     }
 }

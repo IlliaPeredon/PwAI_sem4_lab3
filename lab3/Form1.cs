@@ -156,26 +156,27 @@ namespace lab3
         // point 4
 
         public delegate void UIUpdateDelegate();
+        private UIUpdateDelegate builtUpdateUI;
+        private string colorToImplement;
+        private string fontColorToImplement;
+        private int fontSizeToImplement;
 
         private void ChangeBackgroundColor()
         {
-            Test_Subject_Label.BackColor = ColorTranslator.FromHtml(BackGround_Color.Text);
+            this.BackColor = ColorTranslator.FromHtml(colorToImplement);
         }
 
         private void ChangeFontColor()
         {
-            Test_Subject_Label.ForeColor = ColorTranslator.FromHtml(Font_Color.Text);
+            Test_Subject_Label.ForeColor = ColorTranslator.FromHtml(fontColorToImplement);
         }
 
         private void ChangeFontSize()
         {
-            if (int.TryParse(Font_Size.Text, out int size))
-            {
-                Test_Subject_Label.Font = new Font(Test_Subject_Label.Font.FontFamily, size);
-            }
+            Test_Subject_Label.Font = new Font(Test_Subject_Label.Font.FontFamily, fontSizeToImplement);
         }
 
-        private void Implement_Colors_Button_Click(object sender, EventArgs e)
+        private void Build_button_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(BackGround_Color.Text) ||
                 string.IsNullOrWhiteSpace(Font_Color.Text) ||
@@ -203,13 +204,28 @@ namespace lab3
                 return;
             }
 
-            UIUpdateDelegate updateUI = ChangeBackgroundColor;
-            updateUI += ChangeFontColor;
-            updateUI += ChangeFontSize;
+            colorToImplement = BackGround_Color.Text;
+            fontColorToImplement = Font_Color.Text;
+            fontSizeToImplement = size;
+
+            builtUpdateUI = ChangeBackgroundColor;
+            builtUpdateUI += ChangeFontColor;
+            builtUpdateUI += ChangeFontSize;
+
+            MessageBox.Show("Changes built successfully! You can now implement them.");
+        }
+
+        private void Implement_Colors_Button_Click(object sender, EventArgs e)
+        {
+            if (builtUpdateUI == null)
+            {
+                MessageBox.Show("Please build the changes first.");
+                return;
+            }
 
             try
             {
-                updateUI();
+                builtUpdateUI();
             }
             catch (Exception ex)
             {
@@ -219,29 +235,69 @@ namespace lab3
 
         private void BackToNormal_button_Click(object sender, EventArgs e)
         {
-            Test_Subject_Label.BackColor = SystemColors.Control;
+            this.BackColor = SystemColors.Control;
             Test_Subject_Label.ForeColor = SystemColors.ControlText;
             Test_Subject_Label.Font = new Font(Test_Subject_Label.Font.FontFamily, 9f);
 
             BackGround_Color.Clear();
             Font_Color.Clear();
             Font_Size.Clear();
+
+            builtUpdateUI = null;
         }
 
-        //point 5
+        // point 5 and 6
 
-        public delegate List<double> SortDelegate(List<double> list);
-        private List<double> BubbleSort(List<double> list)
+        public struct MixedItem : IComparable<MixedItem>
         {
-            List<double> sorted = new List<double>(list); // copy list
+            public string OriginalText;
+            public double NumberValue;
+            public bool IsNumber;
+
+            public MixedItem(string text)
+            {
+                OriginalText = text;
+                IsNumber = double.TryParse(text, out NumberValue);
+            }
+
+            public int CompareTo(MixedItem other)
+            {
+                if (this.IsNumber && other.IsNumber)
+                {
+                    return this.NumberValue.CompareTo(other.NumberValue);
+                }
+                if (this.IsNumber && !other.IsNumber)
+                {
+                    return -1; // Numbers first
+                }
+                if (!this.IsNumber && other.IsNumber)
+                {
+                    return 1; // Strings after numbers
+                }
+                
+                // if both are strings. Sort alphabetically.
+                return string.Compare(this.OriginalText, other.OriginalText, StringComparison.OrdinalIgnoreCase);
+            }
+
+            public override string ToString()
+            {
+                return OriginalText;
+            }
+        }
+
+        public delegate List<T> SortDelegate<T>(List<T> list);
+
+        private List<T> BubbleSort<T>(List<T> list) where T : IComparable<T>
+        {
+            List<T> sorted = new List<T>(list); // copy list
 
             for (int i = 0; i < sorted.Count - 1; i++)
             {
                 for (int j = 0; j < sorted.Count - i - 1; j++)
                 {
-                    if (sorted[j] > sorted[j + 1])
+                    if (sorted[j].CompareTo(sorted[j + 1]) > 0)
                     {
-                        double temp = sorted[j];
+                        T temp = sorted[j];
                         sorted[j] = sorted[j + 1];
                         sorted[j + 1] = temp;
                     }
@@ -250,33 +306,35 @@ namespace lab3
 
             return sorted;
         }
-        private List<double> sortNumbersList = new List<double>();
+
+        private List<MixedItem> sortMixedList = new List<MixedItem>();
 
         private void AddToSortList_Click(object sender, EventArgs e)
         {
-            if (!double.TryParse(textBox1.Text, out double number))
+            if (string.IsNullOrWhiteSpace(textBox1.Text))
             {
-                MessageBox.Show("Invalid number.");
+                MessageBox.Show("Please enter a value.");
                 return;
             }
 
-            sortNumbersList.Add(number);
-            listBox3.Items.Add(number);
+            var item = new MixedItem(textBox1.Text);
+            sortMixedList.Add(item);
+            listBox3.Items.Add(item);
 
             textBox1.Clear();
         }
 
         private void Sort_Click(object sender, EventArgs e)
         {
-            if (sortNumbersList.Count == 0)
+            if (sortMixedList.Count == 0)
             {
                 MessageBox.Show("List is empty.");
                 return;
             }
 
-            SortDelegate sorter = BubbleSort;
+            SortDelegate<MixedItem> sorter = BubbleSort;
 
-            var sortedList = sorter(sortNumbersList);
+            var sortedList = sorter(sortMixedList);
 
             listBox4.Items.Clear();
 

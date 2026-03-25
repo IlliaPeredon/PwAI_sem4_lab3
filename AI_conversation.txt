@@ -1,0 +1,149 @@
+Can you please logically connect ui and logic. 
+User must enter a number in N_Place_textBox, then user choose an action in comboBox1, and after button1_Click is triggered program checks is the N_Place_textBox non empty, itm in comboBox1 is chosen and if everything allright does a chosen calculation and shows output in Output_textBox.
+
+
+
+Analyzed
+Analyzed
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Edited
++49
+-1
+
+
+I have updated the 
+
+button1_Click
+ method in 
+
+Form1.cs
+ to fully connect the logic to the user interface according to your instructions.
+
+Here is what it does now when the "Calculate" button is clicked:
+
+Checks if the N_place_textBox is empty and warns the user if it is.
+Checks if an action is selected in comboBox1 and asks to choose one if missing.
+Attempts to parse the inputted text into a double. If it fails, it displays an error message about an invalid format.
+Checks the selected action 
+
+Square
+, Square root, or 
+
+Reciprocal
+.
+For Square root and 
+
+Reciprocal
+, it prevents evaluating negative numbers and division by zero respectively.
+Delegates the correct pre-existing logic method (like 
+
+Square_Root
+) to the MathOperation delegate, calculates the result, and outputs it into the Output_textBox.
+
+
+
+
+Can you please implement logic for new changes in Designer under label with text Point 4.
+Generaly it must suit this requirements:
+Multicast Delegates (UI Styling): The ability to add multiple methods to a separate delegate variable (multicast) and invoke that list of methods simultaneously. The methods should include:
+Changing the background color.
+Changing the font color.
+Changing the font size of a label.
+Bonus: A button to reset the window’s appearance to default.
+
+And o little bit of details:
+User writes a color in Font_Color, program checks does the written suit the #ffffff format (probably with Regex) and if allright changes the Test_Subject_Label font color for it, same with Font_Size but there`s only number and intParse check, and same with BackGround_Colod.
+Implement_Colors_Button implements all 3 changes at once and only if all 3 textboxes are filled. BackToNormal_button just sets all changed variables to what they where like at the beggining.
+
+
+
+
+
+Analyzed
+
+
+
+
+
+
+Edited
++2
+-0
+
+
+
+
+
+
+
+
+
+
+
+
+Edited
++74
+-0
+
+
+I have added the requested logic to both 
+
+Form1.cs
+ and 
+
+Form1.Designer.cs
+ for Point 4.
+
+Here is a summary of the implemented logic:
+
+Multicast Delegate Implementation:
+
+I declared a new delegate: public delegate void UIUpdateDelegate();
+Created individual styling methods: 
+
+ChangeBackgroundColor()
+, 
+
+ChangeFontColor()
+, and 
+
+ChangeFontSize()
+.
+When Implement is clicked, it initializes the delegate and adds all the methods to it:
+csharp
+UIUpdateDelegate updateUI = ChangeBackgroundColor;
+updateUI += ChangeFontColor;
+updateUI += ChangeFontSize;
+All styling changes are then invoked at once with a single call: updateUI().
+Validation (Regex and Parsing):
+
+The program first checks if all three text boxes for Point 4 are filled.
+It runs a Regex check (^#[0-9a-fA-F]{6}$) on BackGround_Color and Font_Color inputs to ensure they strictly follow the #ffffff hex format.
+It ensures Font_Size input is a valid positive integer using int.TryParse.
+Shows appropriate warning messages if any of the checks fail.
+Reset Button (Bonus):
+
+Clicking Set to normal (
+
+BackToNormal_button_Click
+) restores the Test_Subject_Label background color, font color, and font size back to their Windows default configurations.
+It also clears the previously entered styling settings from the text boxes to make it completely fresh.
+The events are properly subscribed via 
+
+Form1.Designer.cs
+ automatically triggering these actions when you run the application and test out the new UI functionality. Let me know if you would like me to adjust any of these options!
+
+Model
