@@ -147,3 +147,105 @@ Form1.Designer.cs
  automatically triggering these actions when you run the application and test out the new UI functionality. Let me know if you would like me to adjust any of these options!
 
 Model
+
+
+
+
+
+
+
+
+*added later*
+
+
+
+
+
+Can you please make some changes in Point 4: 
+Firstly, changes set into color/forn fields must first be build be Build_button and only then that changes that were. build will be implemented.
+And background color must change not label`s bsckground but Form1`s(and of coarse set "to normal" button must be change accordingly)
+
+
+
+Analyzed
+
+
+Analyzed
+
+
+
+Edited
++32
+-14
+Edited
++1
+-0
+
+
+I have made the requested changes to your application regarding Point 4.
+
+Here is a summary of the updates:
+
+Build before Implementing:
+I added the 
+
+Build_button_Click
+ event handler and wired it up to the 
+
+Build_button
+ in the UI designer.
+When you click Build, the inputs (Background Color, Font Color, and Font Size) are validated and saved, and a delegate (UIUpdateDelegate builtUpdateUI) is prepared with the valid parameters. A message box will confirm that the changes were successfully built.
+When you click Implement, the application now safely executes the prepared delegate, applying the exact values that were validated during the build step. If no changes have been built yet, it will prompt you to build them first.
+Form Background Color:
+The background color change now targets this.BackColor inside 
+
+Form1
+ instead of changing the label's background. This will change the background of your entire window.
+The Set to normal (
+
+BackToNormal_button_Click
+) button was also updated to revert the window's background color back to its standard system color (SystemColors.Control) and clear the builtUpdateUI delegate.
+
+
+
+
+
+
+
+
+Thanks you.
+And now please add the Point 6.
+You need to modify point 5`s code so lists would become generic. User would be able to write there both numbers and strings.
+How it would be sorted: numbers - same as in point 5, but sorted numbers would be at top of list; strings - alfabeticaly by first number, and sorted list of strings would be after sorted numbers in result list
+
+
+
+
+
+
+
+Edited
++67
+-27
+
+
+
+I have completed the changes for Point 6!
+
+Here is what I did:
+
+Generic Implementation: I updated the bubble sort algorithm to be fully generic (BubbleSort<T>) so it is capable of sorting any type that implements the IComparable<T> interface.
+Mixed Item Structure: I created a 
+
+MixedItem
+ struct to act as the type representing an entry in the list, parsing the input string cleanly.
+Sorting Logic: Within 
+
+MixedItem
+, I implemented the requirement for sorting:
+Evaluates whether the element is a number or a string.
+When sorting two numbers, they are sorted mathematically.
+When sorting two strings, they are sorted alphabetically.
+When sorting a number against a string, the number is always sorted first.
+You can now test the application by putting any combinations of numbers and strings into the list, and it will sort them with the numbers at the top followed by alphabetical strings at the bottom!
+
